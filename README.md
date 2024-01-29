@@ -1,7 +1,7 @@
-# SE-Enshrouded (english version)
+# SMM-Enshrouded (english version)
 
 ## Introduction
-SE-Enshrouded (Server Essentials Enshrouded) is a software developed using AutoIt for the graphical interface and Python for monitoring, specifically designed for tracking the processes of the "Enshrouded" game server. It provides real-time monitoring of server performance, including CPU usage, RAM, and disk write speed. The software is currently available in French and English.
+SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) is a software developed using AutoIt for the graphical interface and Python for monitoring, specifically designed for tracking the processes of the "Enshrouded" game server. It provides real-time monitoring of server performance, including CPU usage, RAM, and disk write speed. The software is currently available in French and English.
 
 ## Features
 - **Real-time monitoring of the Enshrouded server**: Tracks CPU usage, RAM, and disk write speed of the Enshrouded server.
@@ -28,10 +28,10 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 ---
 
-# SE-Enshrouded (frensh version)
+# SMM-Enshrouded (frensh version)
 
 ## Introduction
-SE-Enshrouded (Server Essentials Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance, spécialement conçu pour le suivi des processus du serveur du jeu "Enshrouded". Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
+SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance, spécialement conçu pour le suivi des processus du serveur du jeu "Enshrouded". Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
 
 ## Fonctionnalités
 - **Surveillance en temps réel du serveur Enshrouded** : Suivi de l'utilisation du CPU, de la RAM, et de la vitesse d'écriture sur le disque du serveur Enshrouded.
