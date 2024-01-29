@@ -28,7 +28,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 ---
 
-# SMM-Enshrouded (frensh version)
+# SMM-Enshrouded (french version)
 
 ## Introduction
 SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance, spécialement conçu pour le suivi des processus du serveur du jeu "Enshrouded". Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
