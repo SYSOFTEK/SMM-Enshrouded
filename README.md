@@ -8,6 +8,9 @@ SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) is a software deve
 - **Integration of the Enshrouded server console**: The AutoIt interface captures the Enshrouded server's console without modifying the server executable. This allows the server console to be displayed directly within our software's user interface.
 - **Configuration modification**: Enables changing the Enshrouded server's JSON configuration via an accessible configuration panel.
 
+## Pre-Compilation
+A pre-compiled binary of the software is available. However, it is important to note that some antivirus software, especially those using VirusTotal, may flag false positives. These alerts do not reflect the actual presence of malicious software in our software. We encourage users to verify the sources if necessary. For those who prefer, it is also possible to compile the software from the sources.
+
 ## Prerequisites
 - [AutoIt](https://www.autoitscript.com/site/autoit/)
 - [Python](https://www.python.org/downloads/)
@@ -37,6 +40,9 @@ SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) est un logiciel d�
 - **Surveillance en temps réel du serveur Enshrouded** : Suivi de l'utilisation du CPU, de la RAM, et de la vitesse d'écriture sur le disque du serveur Enshrouded.
 - **Intégration de la console du serveur Enshrouded** : L'interface AutoIt capture la console du serveur Enshrouded sans modifier l'exécutable du serveur. Cela permet d'afficher la console du serveur directement dans l'interface utilisateur de notre logiciel.
 - **Modification de la configuration** : Permet de changer la configuration JSON du serveur Enshrouded via un panneau de configuration accessible.
+
+## Pré-Compilation
+Un binaire pré-compilé du logiciel est disponible. Cependant, il est important de noter que certains antivirus, notamment ceux utilisant VirusTotal, peuvent signaler des faux positifs. Ces alertes ne reflètent pas la présence réelle de logiciels malveillants dans notre logiciel. Nous encourageons les utilisateurs à vérifier les sources si nécessaire. Pour ceux qui préfèrent, il est également possible de compiler le logiciel à partir des sources.
 
 ## Prérequis
 - [AutoIt](https://www.autoitscript.com/site/autoit/)
