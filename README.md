@@ -1,63 +1,79 @@
-# SMM-Enshrouded (english version)
+# SMM-Enshrouded v1.0.0.0
+
+---
 
 ## Introduction
-SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) is a software developed using AutoIt for the graphical interface and Python for monitoring, specifically designed for tracking the processes of the "Enshrouded" game server. It provides real-time monitoring of server performance, including CPU usage, RAM, and disk write speed. The software is currently available in French and English.
+SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt for the graphical interface and Python for monitoring. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
 
 ## Features
-- **Real-time monitoring of the Enshrouded server**: Tracks CPU usage, RAM, and disk write speed of the Enshrouded server.
-- **Integration of the Enshrouded server console**: The AutoIt interface captures the Enshrouded server's console without modifying the server executable. This allows the server console to be displayed directly within our software's user interface.
-- **Configuration modification**: Enables changing the Enshrouded server's JSON configuration via an accessible configuration panel.
+- **Real-time server monitoring**: Tracking of CPU, RAM usage, and disk write speed.
+- **Integration of the Enshrouded server console**: Display of the game server console directly in the SMM-Enshrouded interface.
+- **Configuration modification**: Modification of the Enshrouded server's JSON configuration via an accessible panel.
 
 ## Pre-Compilation
-A pre-compiled binary of the software is available. However, it is important to note that some antivirus software, especially those using VirusTotal, may flag false positives. These alerts do not reflect the actual presence of malicious software in our software. We encourage users to verify the sources if necessary. For those who prefer, it is also possible to compile the software from the sources.
+A pre-compiled binary of the software is available. However, it is important to note that some antivirus programs, and via VirusTotal scanning, may report false positives. These alerts do not reflect the presence of malware in the software. We encourage users to verify the sources if necessary. For those who prefer, it is also possible to compile the software from the sources.
 
-## Prerequisites
+## Compilation
+Before compiling the software, make sure you have the following prerequisites:
 - [AutoIt](https://www.autoitscript.com/site/autoit/)
 - [Python](https://www.python.org/downloads/)
-- Python [psutil library](https://pypi.org/project/psutil/)
+- Python Library [psutil](https://pypi.org/project/psutil/)
+- Python Library [PyInstaller](https://pypi.org/project/pyinstaller/)
 
-## Installation and Usage
-1. Install AutoIt from its official website.
-2. Install Python, ensuring it is added to your system's PATH.
-3. Install the psutil library using the command: `pip install psutil`.
-4. Launch SE-Enshrouded in the same folder as the Enshrouded server executable for optimal integration.
+Follow these steps to compile SMM-Enshrouded:
+1. Compile the Python script cpuramio.py using PyInstaller. Place the cpuramio.exe executable in the same folder as the other files (icon, images, etc.).
+2. Then, compile the AutoIt script SMM-Enshrouded.au3 using AutoIt.
+
+## Usage
+To use SMM-Enshrouded, follow these instructions:
+- Place and launch the SMM-Enshrouded.exe executable in the root folder where the enshrouded_server.exe file is located.
+- Note that the executable's data will be extracted to the %appdata% directory.
 
 ## Available Languages
 - French
 - English
 
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
+This project is under the MIT license. See the `LICENSE` file for more information.
+
+## Security and Data Integrity
+It is important to emphasize that SMM-Enshrouded does not modify, affect, or inject any code into the original files of the Enshrouded server. The software acts solely as a monitoring and management tool.
 
 ---
 
-# SMM-Enshrouded (french version)
-
 ## Introduction
-SMM-Enshrouded (Server Manager and Monitoring for Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance, spécialement conçu pour le suivi des processus du serveur du jeu "Enshrouded". Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
+SMM-Enshrouded (Server Manager and Monitor for Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance. Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
 
 ## Fonctionnalités
-- **Surveillance en temps réel du serveur Enshrouded** : Suivi de l'utilisation du CPU, de la RAM, et de la vitesse d'écriture sur le disque du serveur Enshrouded.
-- **Intégration de la console du serveur Enshrouded** : L'interface AutoIt capture la console du serveur Enshrouded sans modifier l'exécutable du serveur. Cela permet d'afficher la console du serveur directement dans l'interface utilisateur de notre logiciel.
-- **Modification de la configuration** : Permet de changer la configuration JSON du serveur Enshrouded via un panneau de configuration accessible.
+- **Surveillance en temps réel du serveur** : Suivi de l'utilisation du CPU, de la RAM, et de la vitesse d'écriture sur le disque.
+- **Intégration de la console du serveur Enshrouded** : Affichage de la console du serveur de jeu directement dans l'interface de SMM-Enshrouded.
+- **Modification de la configuration** : Modification de la configuration JSON du serveur Enshrouded via un panneau accessible.
 
 ## Pré-Compilation
-Un binaire pré-compilé du logiciel est disponible. Cependant, il est important de noter que certains antivirus, notamment ceux utilisant VirusTotal, peuvent signaler des faux positifs. Ces alertes ne reflètent pas la présence réelle de logiciels malveillants dans notre logiciel. Nous encourageons les utilisateurs à vérifier les sources si nécessaire. Pour ceux qui préfèrent, il est également possible de compiler le logiciel à partir des sources.
+Un binaire pré-compilé du logiciel est disponible. Cependant, il est important de noter que certains antivirus, et via le scan de VirusTotal peuvent signaler des faux positifs. Ces alertes ne reflètent pas la présence de logiciels malveillants dans le logiciel. Nous encourageons les utilisateurs à vérifier les sources si nécessaire. Pour ceux qui préfèrent, il est également possible de compiler le logiciel à partir des sources.
 
-## Prérequis
+## Compilation
+Avant de compiler le logiciel, assurez-vous d'avoir les prérequis suivants :
 - [AutoIt](https://www.autoitscript.com/site/autoit/)
 - [Python](https://www.python.org/downloads/)
 - Bibliothèque Python [psutil](https://pypi.org/project/psutil/)
+- Bibliothèque Python [PyInstaller](https://pypi.org/project/pyinstaller/)
 
-## Installation et Utilisation
-1. Installez AutoIt à partir de son site officiel.
-2. Installez Python et assurez-vous qu'il est ajouté au PATH de votre système.
-3. Installez la bibliothèque psutil en utilisant la commande : `pip install psutil`.
-4. Lancez SE-Enshrouded dans le même dossier que l'exécutable du serveur Enshrouded pour une intégration optimale.
+Suivez ces étapes pour compiler SMM-Enshrouded :
+1. Compilez le script Python cpuramio.py en utilisant PyInstaller. Placez l'exécutable cpuramio.exe dans le même dossier que les autres fichiers (icône, images, etc.).
+2. Ensuite, compilez le script AutoIt SMM-Enshrouded.au3 en utilisant AutoIt.
+
+## Utilisation
+Pour utiliser SMM-Enshrouded, suivez ces instructions :
+- Placez et lancez l'exécutable SMM-Enshrouded.exe dans le dossier racine où se trouve le fichier enshrouded_server.exe.
+- Notez que les données de l'exécutable seront extraites dans le répertoire %appdata%.
 
 ## Langues Disponibles
 - Français
 - Anglais
 
 ## Licence
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus d'informations.
+Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus d'informations.
+
+## Sécurité et Intégrité des Données
+Il est important de souligner que SMM-Enshrouded ne modifie, n'affecte, ni n'injecte aucun code dans les fichiers originaux du serveur Enshrouded. Le logiciel agit uniquement en tant qu'outil de surveillance et de gestion.
