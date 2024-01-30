@@ -1,0 +1,35 @@
+[FR]
+lng=Francais
+gp_server=Gestion serveur
+gp_perf=Performance
+gp_disk=Activité disque
+gp_config=Configuration
+list_opt=Option
+list_val=Valeur
+tray_show=Afficher
+tray_hide=Masquer
+tray_quit=Quitter
+msg_avert=Avertissement
+msg_exec=Le serveur est en cours d'exécution,[br]l'arrêter et quitter?
+msg_errorun=Erreur de démarrage
+msg_missexe=Exécutable introuvable!
+msg_lang=Changement de langue
+msg_langdesc=Voulez vous appliquer cette langue?[br]Vous devrez relancer
+
+[EN]
+lng=English
+gp_server=Server control
+gp_perf=Performance
+gp_disk=Disk activity
+gp_config=Configuration
+list_opt=Option
+list_val=Value
+tray_show=Show
+tray_hide=Hide
+tray_quit=Quit
+msg_avert=Warning
+msg_exec=Server is running,[br]stop and quit?
+msg_errorun=Startup error
+msg_missexe=Executable not found!
+msg_lang=Language change
+msg_langdesc=Do you want to apply this language?[br]You will need to restart
