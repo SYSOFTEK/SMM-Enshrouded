@@ -1,7 +1,7 @@
 # SMM-Enshrouded v1.0.0.0
 
 
-## Introduction
+## Introduction (english version)
 SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt for the graphical interface and Python for monitoring. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
 
 ## Features
@@ -40,7 +40,7 @@ It is important to emphasize that SMM-Enshrouded does not modify, affect, or inj
 
 ---
 
-## Introduction
+## Introduction (version francaise)
 SMM-Enshrouded (Server Manager and Monitor for Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance. Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
 
 ## Fonctionnalités
