@@ -6,7 +6,7 @@
 |English Description                 |Description Francaise                |%  |
 |------------------------------------|-------------------------------------|---|
 |New Interface                       |Nouvelle interface                   |0% |
-|Installation/Update via SteamCMD    |Installation/mise à jour via SteamCMD|0% |
+|Installation/Update via SteamCMD    |Installation/Mise à jour via SteamCMD|0% |
 |Server Profile Management           |Profile serveur                      |0% |
 |Backup Management                   |Sauvegarde                           |0% |
 
