@@ -1,5 +1,11 @@
 # SMM-Enshrouded v2.0.0.0
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/SYSOFTEK/SMM-Enshrouded)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/SYSOFTEK/SMM-Enshrouded/total)
+![GitHub issues](https://img.shields.io/github/issues-raw/SYSOFTEK/SMM-Enshrouded)
+![GitHub last commit](https://img.shields.io/github/last-commit/SYSOFTEK/SMM-Enshrouded)
+
+
 ![SCREENSHOT](/screenshot.jpg)
 
 ### ROADMAP
