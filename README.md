@@ -33,6 +33,7 @@ Follow these steps to compile SMM-Enshrouded:
 To use SMM-Enshrouded, follow these instructions:
 - Place and launch the SMM-Enshrouded.exe executable in the root folder where the enshrouded_server.exe file is located.
 - Note that the executable's data will be extracted to the %appdata% directory.
+- To configure the server, it needs to be launched once to create the configuration file.
 
 ## Available Languages
 - French
@@ -72,6 +73,7 @@ Suivez ces étapes pour compiler SMM-Enshrouded :
 Pour utiliser SMM-Enshrouded, suivez ces instructions :
 - Placez et lancez l'exécutable SMM-Enshrouded.exe dans le dossier racine où se trouve le fichier enshrouded_server.exe.
 - Notez que les données de l'exécutable seront extraites dans le répertoire %appdata%.
+- Pour pouvoir configurer le serveur, il est nécessaire de le lancer une fois afin de créer le fichier de configuration.
 
 ## Langues Disponibles
 - Français
