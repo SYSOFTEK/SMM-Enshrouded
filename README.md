@@ -5,7 +5,6 @@
 ![GitHub issues](https://img.shields.io/github/issues-raw/SYSOFTEK/SMM-Enshrouded)
 ![GitHub last commit](https://img.shields.io/github/last-commit/SYSOFTEK/SMM-Enshrouded)
 
-
 ![SCREENSHOT](/screenshot.jpg)
 
 ### ROADMAP
