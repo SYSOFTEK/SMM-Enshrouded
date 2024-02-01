@@ -1,5 +1,5 @@
 ---
-name: Feature request (ENGLISH)
+name: ENGLISH - Feature request
 about: Suggest an idea for this project
 title: ''
 labels: enhancement

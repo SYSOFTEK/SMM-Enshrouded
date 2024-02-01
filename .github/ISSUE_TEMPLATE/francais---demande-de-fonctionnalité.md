@@ -1,5 +1,5 @@
 ---
-name: Demande de fonctionnalité (FRANCAIS)
+name: FRANCAIS - Demande de fonctionnalité
 about: Proposez une idée pour ce projet
 title: ''
 labels: enhancement

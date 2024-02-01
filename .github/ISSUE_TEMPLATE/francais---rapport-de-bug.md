@@ -1,5 +1,5 @@
 ---
-name: Rapport de bug (FRANCAIS)
+name: FRANCAIS - Rapport de bug
 about: Créez un rapport pour nous aider à nous améliorer
 title: ''
 labels: bug
