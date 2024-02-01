@@ -1,4 +1,4 @@
-# SMM-Enshrouded v1.0.0.0
+# SMM-Enshrouded v2.0.0.0
 
 ![SCREENSHOT](/screenshot.jpg)
 
