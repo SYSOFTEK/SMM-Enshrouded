@@ -8,9 +8,10 @@
 ![SCREENSHOT](/screenshot.jpg)
 
 ### ROADMAP
-|English Description                          |Description Francaise                       |%  |
-|---------------------------------------------|--------------------------------------------|---|
-|Test IF serveur is online via steamquerytool |Test si serveur en ligne via steamquerytool |30%|
+|English Description                          |Description Francaise                                    |%  |
+|---------------------------------------------|---------------------------------------------------------|---|
+|Test IF serveur is online via steamquerytool |Test si serveur en ligne via steamquerytool              |30%|
+|Notify and update directly in the software   |Notification et mise à jour directement dans le logiciel |0% |
 
 ## Introduction (english version)
 SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt for the graphical interface and Python for monitoring. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
