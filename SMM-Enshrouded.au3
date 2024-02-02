@@ -3,9 +3,9 @@
 #AutoIt3Wrapper_Compression=0
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=SMM-Enshourded
-#AutoIt3Wrapper_Res_Fileversion=2.0.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.1.0.0
 #AutoIt3Wrapper_Res_ProductName=SMM-Enshourded
-#AutoIt3Wrapper_Res_ProductVersion=2.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=2.1.0.0
 #AutoIt3Wrapper_Res_LegalCopyright=(c) sysoftek@github
 #AutoIt3Wrapper_Res_Language=1036
 #EndRegion
