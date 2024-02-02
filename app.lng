@@ -50,6 +50,9 @@ tip_steamcmd=Mettre à jour le serveur
 tip_backup=Sauvegarder le profil actuel
 tip_config=Configuration du serveur
 tip_about=A propos
+tip_profile_load=Charger le profil séléctionné
+tip_profile_add=Ajouter un profil
+tip_profile_del=Supprimer un profil
 
 [EN]
 lng=English
@@ -103,3 +106,6 @@ tip_steamcmd=Update the server
 tip_backup=Backup the current profile
 tip_config=Server configuration
 tip_about=About
+tip_profile_load=Load the selected profile
+tip_profile_add=Add a profile
+tip_profile_del=Delete a profile
