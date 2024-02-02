@@ -42,6 +42,14 @@ msg_profil_del_confirm_1=Données supprimées
 msg_profil_del_confirm_2=Sauvegarde du monde
 msg_profil_save=Sauvegarde du profil
 msg_profil_save_desc=Faire une sauvegarde du profil actuel
+tip_profile=Gestion des profils
+tip_start=Démarrer le serveur
+tip_stop=Arrêter le serveur
+tip_restart=Redémarrer le serveur
+tip_steamcmd=Mettre à jour le serveur
+tip_backup=Sauvegarder le profil actuel
+tip_config=Configuration du serveur
+tip_about=A propos
 
 [EN]
 lng=English
@@ -87,3 +95,11 @@ msg_profil_del_confirm_1=Data deleted
 msg_profil_del_confirm_2=World backup
 msg_profil_save=Profile backup
 msg_profil_save_desc=Make a backup of the current profile
+tip_profile=Profile management
+tip_start=Start the server
+tip_stop=Stop the server
+tip_restart=Restart the server
+tip_steamcmd=Update the server
+tip_backup=Backup the current profile
+tip_config=Server configuration
+tip_about=About
