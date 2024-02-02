@@ -1,4 +1,4 @@
-# SMM-Enshrouded v2.0.0.0
+# SMM-Enshrouded v2.1.0.0
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/SYSOFTEK/SMM-Enshrouded)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/SYSOFTEK/SMM-Enshrouded/total)
@@ -10,7 +10,7 @@
 ### ROADMAP
 |English Description                 |Description Francaise                |%  |
 |------------------------------------|-------------------------------------|---|
-|Buttons ToolTip description          |ToolTip sur les boutons             |0% |
+|          |             | |
 
 ## Introduction (english version)
 SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt for the graphical interface and Python for monitoring. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
