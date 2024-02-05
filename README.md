@@ -8,10 +8,12 @@
 ![SCREENSHOT](/screenshot.jpg)
 
 ### ROADMAP
-|English Description                          |Description Francaise                                    |%  |
-|---------------------------------------------|---------------------------------------------------------|---|
-|Test IF serveur is online via steamquerytool |Test si serveur en ligne via steamquerytool              |30%|
-|Notify and update directly in the software   |Notification et mise à jour directement dans le logiciel |0% |
+|English Description                                          |Description Francaise                                            |%  |
+|-------------------------------------------------------------|-----------------------------------------------------------------|---|
+|PRIORIY : new methode for cpuramio (AV cause false positive) |PRIORIY : nouvelle methode pour cpuramio (AV cause faux positif) |0% |
+|Test IF serveur is online via steamquerytool                 |Test si serveur en ligne via steamquerytool                      |30%|
+|Notify update directly in the software                       |Notification de mise à jour directement dans le logiciel         |0% |
+|Backup and profile with JSON config file                     | Sauvegarde et profil avec le fichier de config JSON             |0% |
 
 ## Introduction (english version)
 SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt for the graphical interface and Python for monitoring. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
