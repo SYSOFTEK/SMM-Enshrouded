@@ -1,4 +1,4 @@
-# SMM-Enshrouded v2.1.0.0
+# SMM-Enshrouded v2.2.0.0
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/SYSOFTEK/SMM-Enshrouded)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/SYSOFTEK/SMM-Enshrouded/total)
@@ -10,13 +10,12 @@
 ### ROADMAP
 |English Description                                           |Description Francaise                                             |%  |
 |--------------------------------------------------------------|------------------------------------------------------------------|---|
-|PRIORITY : new methode for cpuramio (AV cause false positive) |PRIORITE : nouvelle methode pour cpuramio (AV cause faux positif) |0% |
 |Test IF serveur is online via steamquerytool                  |Test si serveur en ligne via steamquerytool                       |30%|
 |Notify update directly in the software                        |Notification de mise à jour directement dans le logiciel          |0% |
 |Backup and profile with JSON config file                      | Sauvegarde et profil avec le fichier de config JSON              |0% |
 
 ## Introduction (english version)
-SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt for the graphical interface and Python for monitoring. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
+SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
 
 ## Features
 - **Real-time server monitoring**: Tracking of CPU, RAM usage, and disk write speed.
@@ -29,13 +28,9 @@ A pre-compiled binary of the software is available. However, it is important to 
 ## Compilation
 Before compiling the software, make sure you have the following prerequisites:
 - [AutoIt](https://www.autoitscript.com/site/autoit/)
-- [Python](https://www.python.org/downloads/)
-- Python Library [psutil](https://pypi.org/project/psutil/)
-- Python Library [PyInstaller](https://pypi.org/project/pyinstaller/)
 
 Follow these steps to compile SMM-Enshrouded:
-1. Compile the Python script cpuramio.py using PyInstaller. Place the cpuramio.exe executable in the same folder as the other files (icon, images, etc.).
-2. Then, compile the AutoIt script SMM-Enshrouded.au3 using AutoIt.
+1. Compile the AutoIt script SMM-Enshrouded.au3 using AutoIt in the same folder as the other files (icon, images, etc.).
 
 ## Usage
 To use SMM-Enshrouded, follow these instructions:
@@ -56,7 +51,7 @@ It is important to emphasize that SMM-Enshrouded does not modify, affect, or inj
 ---
 
 ## Introduction (version francaise)
-SMM-Enshrouded (Server Manager and Monitor for Enshrouded) est un logiciel développé avec AutoIt pour l'interface graphique et Python pour la surveillance. Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
+SMM-Enshrouded (Server Manager and Monitor for Enshrouded) est un logiciel développé avec AutoIt. Il offre une surveillance en temps réel des performances du serveur, incluant l'utilisation du CPU, de la RAM, et la vitesse d'écriture sur le disque. Le logiciel est actuellement disponible en français et en anglais.
 
 ## Fonctionnalités
 - **Surveillance en temps réel du serveur** : Suivi de l'utilisation du CPU, de la RAM, et de la vitesse d'écriture sur le disque.
@@ -69,13 +64,9 @@ Un binaire pré-compilé du logiciel est disponible. Cependant, il est important
 ## Compilation
 Avant de compiler le logiciel, assurez-vous d'avoir les prérequis suivants :
 - [AutoIt](https://www.autoitscript.com/site/autoit/)
-- [Python](https://www.python.org/downloads/)
-- Bibliothèque Python [psutil](https://pypi.org/project/psutil/)
-- Bibliothèque Python [PyInstaller](https://pypi.org/project/pyinstaller/)
 
 Suivez ces étapes pour compiler SMM-Enshrouded :
-1. Compilez le script Python cpuramio.py en utilisant PyInstaller. Placez l'exécutable cpuramio.exe dans le même dossier que les autres fichiers (icône, images, etc.).
-2. Ensuite, compilez le script AutoIt SMM-Enshrouded.au3 en utilisant AutoIt.
+1. Compilez le script AutoIt SMM-Enshrouded.au3 en utilisant AutoIt dans le même dossier que les autres fichiers (icône, images, etc.).
 
 ## Utilisation
 Pour utiliser SMM-Enshrouded, suivez ces instructions :
