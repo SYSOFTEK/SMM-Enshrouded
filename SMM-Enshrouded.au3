@@ -3,9 +3,9 @@
 #AutoIt3Wrapper_Compression=0
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=SMM-Enshourded
-#AutoIt3Wrapper_Res_Fileversion=2.1.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.2.0.0
 #AutoIt3Wrapper_Res_ProductName=SMM-Enshourded
-#AutoIt3Wrapper_Res_ProductVersion=2.1.0.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.0.0
 #AutoIt3Wrapper_Res_LegalCopyright=(c) sysoftek@github
 #AutoIt3Wrapper_Res_Language=1036
 #EndRegion
@@ -16,6 +16,8 @@
 #include<GuiListView.au3>
 #include<File.au3>
 #include<String.au3>
+#include<WinAPISys.au3>
+#include<WinAPIProc.au3>
 
 Opt("GuiCloseOnESC",0)
 Opt("GUIOnEventMode",1)
@@ -45,7 +47,6 @@ FileInstall(".\menu_about.ico",$appdata & "\menu_about.ico",1)
 FileInstall(".\menu_profile_load.ico",$appdata & "\menu_profile_load.ico",1)
 FileInstall(".\menu_profile_add.ico",$appdata & "\menu_profile_add.ico",1)
 FileInstall(".\menu_profile_del.ico",$appdata & "\menu_profile_del.ico",1)
-FileInstall(".\cpuramio.exe",$appdata & "\" & $job & "-MON.exe",1)
 FileInstall(".\LICENSE.txt",$appdata & "\LICENSE.txt",1)
 
 $config = $appdata & "\config.ini"
@@ -57,6 +58,9 @@ Else
 	$solo = ProcessList(@ScriptName)
 	If $solo[0][0] > 1 Then Exit
 EndIf
+
+$strComputer = "."
+$objWMIService = ObjGet("winmgmts:{impersonationLevel=impersonate}!\\" & $strComputer & "\root\cimv2")
 
 Global $list_config,$gui_cell,$edit_cell,$edit_sel,$edit_old,$edit_type,$Item = -1,$SubItem = 0
 $lock = 0
@@ -70,18 +74,20 @@ $dir_steamcmd = $appdata & "\steamcmd"
 DirCreate($dir_steamcmd)
 
 $config_game = @ScriptDir & "\enshrouded_server.json"
-
 $profile = IniRead($config,"config","profile","default")
 
 $pid = 0
 $tray_state = 0
 
+$monitor = 0
+$monitor_timer = 0
+$monitor_read_start = 0
+$monitor_read_end = 0
+$monitor_write_start = 0
+$monitor_write_end = 0
+
 $exe = @ScriptDir & "\enshrouded_server.exe"
 $exe_pid = "enshrouded_server.exe"
-
-$exe_mon = $appdata & "\" & $job & "-MON.exe"
-$exe_mon_pid = $job & "-MON.exe"
-$monitor = $appdata & "\monitor.txt"
 
 $url_steamcmd = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
 $zip_steamcmd = @TempDir & "\steamcmd.zip"
@@ -323,7 +329,6 @@ Func _Start_()
 	Else
 		If $pid == 0 Then
 			$pid = ShellExecute($exe,'',@ScriptDir,"",@SW_HIDE)
-			$pid_mon = ShellExecute($exe_mon,'"' & $monitor & '" "' & $exe_pid & '"',$appdata)
 			_GUI_Embed_($gui,$pid,45,190,700,325)
 			ControlDisable($guiname,"",$button_lng)
 			ControlDisable($guiname,"",$button_profile)
@@ -335,12 +340,15 @@ Func _Start_()
 			ControlDisable($guiname,"",$button_config)
 			ControlHide($guiname,"",$pic_console)
 			ControlHide($guiname,"",$label_console)
+			$monitor = 1
 			AdlibRegister("_Monitor_",1000)
 		EndIf
 	EndIf
 EndFunc
 
+
 Func _Stop_()
+	$monitor = 0
 	AdlibUnRegister("_Monitor_")
 	WinActivate($guiname)
 	MouseClick("left",55,200,1,0)
@@ -348,13 +356,11 @@ Func _Stop_()
 	_Stop_Monitor_()
 EndFunc
 
+
+
 Func _Stop_Monitor_()
+	$monitor = 0
 	AdlibUnRegister("_Monitor_")
-	While 1
-		ProcessClose($exe_mon_pid)
-		If Not ProcessExists($exe_mon_pid) Then ExitLoop
-		Sleep(100)
-	WEnd
 	ControlEnable($guiname,"",$button_lng)
 	ControlEnable($guiname,"",$button_profile)
 	ControlEnable($guiname,"",$button_start)
@@ -376,6 +382,7 @@ EndFunc
 
 Func _Restart_()
 	_Stop_()
+	ProcessWaitClose($exe_pid)
 	_Start_()
 EndFunc
 
@@ -601,14 +608,79 @@ Func _About_Web_()
 EndFunc
 
 Func _Monitor_()
-	$ram_dispo = MemGetStats()
-	$ram_tot = Ceiling((FileReadLine($monitor,2) / ($ram_dispo[2] / 1024)) * 100)
-	GUICtrlSetData($monitor_cpuv,FileReadLine($monitor,1) & "%")
-	GUICtrlSetData($monitor_cpu,FileReadLine($monitor,1))
-	GUICtrlSetData($monitor_ramv,FileReadLine($monitor,2) & "mo")
-	GUICtrlSetData($monitor_ram,$ram_tot)
-	GUICtrlSetData($monitor_disk_r,FileReadLine($monitor,3) & " Mo / sec")
-	GUICtrlSetData($monitor_disk_w,FileReadLine($monitor,4) & " Mo / sec")
+	If $monitor == 1 Then
+		If ProcessExists($exe_pid) Then
+			$getcpu_val = _GetCPU_($pid)
+			GUICtrlSetData($monitor_cpu,$getcpu_val)
+			GUICtrlSetData($monitor_cpuv,$getcpu_val & "%")
+			$ram_exe = ProcessGetStats($exe_pid)
+			$ram_sys = MemGetStats()
+			$ram_val = Ceiling($ram_exe[0] / 1024 / 1024)
+			$ram_tot = Ceiling($ram_val / (($ram_sys[2] / 1024) + ($ram_sys[4] / 1024)) * 100)
+			GUICtrlSetData($monitor_ram,Ceiling($ram_tot))
+			GUICtrlSetData($monitor_ramv,Ceiling($ram_val) & "mo")
+			If $monitor_timer == 0 Then
+				$monitor_read_start = _GetIO_($pid,"r")
+				$monitor_write_start = _GetIO_($pid,"w")
+				$monitor_timer = 1
+			Else
+				$monitor_read_end = _GetIO_($pid,"r")
+				$monitor_write_end = _GetIO_($pid,"w")
+				$monitor_read_tot = Int(($monitor_read_end - $monitor_read_start) / 1000) / 1000
+				$monitor_write_tot = Int(($monitor_write_end - $monitor_write_start) / 1000) / 1000
+				GUICtrlSetData($monitor_disk_r,_Convert_($monitor_read_tot) & " Mo / sec")
+				GUICtrlSetData($monitor_disk_w,_Convert_($monitor_write_tot) & " Mo / sec")
+				$monitor_timer = 0
+			EndIf
+		EndIf
+	EndIf
+EndFunc
+
+Func _GetCPU_($getcpu)
+	If Not ProcessExists($getcpu) Then Return -1
+	Local Static $Prev1_2, $Prev2_2
+	Local $Time1_2 = _WinAPI_GetProcessTimes($getcpu)
+	Local $Time2_2 = _WinAPI_GetSystemTimes()
+	If Not IsArray($Time1_2) Or Not IsArray($Time2_2) Then Return -1
+	$Time1_2 = $Time1_2[1] + $Time1_2[2]
+	$Time2_2 = $Time2_2[1] + $Time2_2[2]
+	$getcpu_tot = Round(($Time1_2 - $Prev1_2) / ($Time2_2 - $Prev2_2) * 100)
+	$Prev1_2 = $Time1_2
+	$Prev2_2 = $Time2_2
+	Return $getcpu_tot
+EndFunc
+
+Func _GetIO_($getio_process,$getio_rw)
+    If Not ProcessExists($getio_process) Then Return SetError(1,0,0)
+    Local $colProcesses,$objProcess,$sngProcessTime
+    $colProcesses = $objWMIService.ExecQuery("Select * from Win32_Process Where ProcessId = '" & $getio_process & "'")
+		For $objProcess in $colProcesses
+			If $getio_rw == "r" Then $sngProcessTime = $objProcess.ReadTransferCount
+			If $getio_rw == "w" Then $sngProcessTime = $objProcess.WriteTransferCount
+		Next
+    Return $sngProcessTime
+EndFunc
+
+Func _Convert_($conv_nbr)
+	$string_1 = _StringBetween($conv_nbr,"",".")
+	If Not @error Then
+		$conv_1 = $string_1[0]
+	Else
+		$conv_1 = 0
+	EndIf
+	$string_2 = _StringBetween($conv_nbr,".","")
+	If @error Then
+		$conv_2 = "000"
+	Else
+		If StringLen($string_2[0]) == 1 Then
+			$conv_2 = $string_2[0] & "00"
+		ElseIf StringLen($string_2[0]) == 2 Then
+			$conv_2 = $string_2[0] & "0"
+		Else
+			$conv_2 = $string_2[0]
+		EndIf
+	EndIf
+	Return $conv_1 & "." & $conv_2
 EndFunc
 
 Func _GUI_Embed_($embed_gui,$embed_pid,$embed_pos_x,$embed_pos_y,$embed_x,$embed_y)
