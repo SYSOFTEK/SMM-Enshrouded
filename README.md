@@ -11,7 +11,7 @@
 |English Description                                           |Description Francaise                                             |%    |
 |--------------------------------------------------------------|------------------------------------------------------------------|-----|
 |Test IF serveur is online via steamquerytool                  |Test si serveur en ligne via steamquerytool                       |100% |
-|Notify update directly in the software                        |Notification de mise à jour directement dans le logiciel          |50%  |
+|Notify update directly in the software                        |Notification de mise à jour directement dans le logiciel          |100% |
 |Backup and profile with JSON config file                      |Sauvegarde et profil avec le fichier de config JSON               |20%  |
 |Players online list                                           |Liste des joueurs en ligne                                        |100% |
 |Webhook Discord (players & server : online / offline)         |Webhook Discord (joueurs & serveur : en ligne / hors ligne)       |100% |
