@@ -15,7 +15,7 @@
 |Backup and profile with JSON config file                      |Sauvegarde et profil avec le fichier de config JSON               |100% |
 |Players online list                                           |Liste des joueurs en ligne                                        |100% |
 |Webhook Discord (players & server : online / offline)         |Webhook Discord (joueurs & serveur : en ligne / hors ligne)       |100% |
-|Update langauge file                                          |Mise à jour du fichier langue                                     |0%   |
+|Update language file                                          |Mise à jour du fichier langue                                     |0%   |
 |Internal TEST                                                 |TEST interne avant                                                |0%   |
 
 ## Introduction (english version)
