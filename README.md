@@ -7,6 +7,10 @@
 
 ![SCREENSHOT](/screenshot.jpg)
 
+- Français
+- English
+- German (thanks to [@teris](https://github.com/teris))
+- 
 ### ROADMAP v2.3.0.0 - TEST
 |English Description                                           |Description Francaise                                             |%    |
 |--------------------------------------------------------------|------------------------------------------------------------------|-----|
@@ -42,10 +46,6 @@ To use SMM-Enshrouded, follow these instructions:
 - Note that the executable's data will be extracted to the %appdata% directory.
 - To configure the server, it needs to be launched once to create the configuration file.
 
-## Available Languages
-- French
-- English
-
 ## License
 This project is under the MIT license. See the `LICENSE` file for more information.
 
@@ -78,10 +78,6 @@ Pour utiliser SMM-Enshrouded, suivez ces instructions :
 - Notez que les données de l'exécutable seront extraites dans le répertoire %appdata%.
 - Pour pouvoir configurer le serveur, il est nécessaire de le lancer une fois afin de créer le fichier de configuration.
 
-## Langues Disponibles
-- Français
-- Anglais
-- German (thanks to [@teris](https://github.com/teris))
 ## Licence
 Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus d'informations.
 
