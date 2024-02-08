@@ -11,16 +11,9 @@
 - English
 - German (thanks to [@teris](https://github.com/teris))
 
-### ROADMAP v2.3.0.0 - TEST
+### ROADMAP
 |English Description                                           |Description Francaise                                             |%    |
 |--------------------------------------------------------------|------------------------------------------------------------------|-----|
-|Test IF serveur is online via steamquerytool                  |Test si serveur en ligne via steamquerytool                       |100% |
-|Notify update directly in the software                        |Notification de mise à jour directement dans le logiciel          |100% |
-|Backup and profile with JSON config file                      |Sauvegarde et profil avec le fichier de config JSON               |100% |
-|Players online list                                           |Liste des joueurs en ligne                                        |100% |
-|Webhook Discord (players & server : online / offline)         |Webhook Discord (joueurs & serveur : en ligne / hors ligne)       |100% |
-|Update language file                                          |Mise à jour du fichier langue                                     |100% |
-|Internal TEST                                                 |TEST interne avant                                                |0%   |
 
 ## Introduction (english version)
 SMM-Enshrouded (Server Manager and Monitor for Enshrouded) is a software developed with AutoIt. It provides real-time monitoring of server performance, including CPU, RAM usage, and disk write speed. The software is currently available in French and English.
