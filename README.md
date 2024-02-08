@@ -10,7 +10,7 @@
 - Français
 - English
 - German (thanks to [@teris](https://github.com/teris))
-- 
+
 ### ROADMAP v2.3.0.0 - TEST
 |English Description                                           |Description Francaise                                             |%    |
 |--------------------------------------------------------------|------------------------------------------------------------------|-----|
