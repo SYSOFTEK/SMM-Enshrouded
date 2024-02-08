@@ -3,9 +3,9 @@
 #AutoIt3Wrapper_Compression=0
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=SMM-Enshourded
-#AutoIt3Wrapper_Res_Fileversion=2.2.0.0
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.0
 #AutoIt3Wrapper_Res_ProductName=SMM-Enshourded
-#AutoIt3Wrapper_Res_ProductVersion=2.2.0.0
+#AutoIt3Wrapper_Res_ProductVersion=2.3.0.0
 #AutoIt3Wrapper_Res_LegalCopyright=(c) sysoftek@github
 #AutoIt3Wrapper_Res_Language=1036
 #EndRegion
@@ -36,6 +36,8 @@ FileInstall(".\sysoftek.jpg",$appdata & "\sysoftek.jpg",1)
 FileInstall(".\app.jpg",$appdata & "\app.jpg",1)
 FileInstall(".\console.jpg",$appdata & "\console.jpg",1)
 FileInstall(".\app.lng",$appdata & "\app.lng",1)
+FileInstall(".\query_on.ico",$appdata & "\query_on.ico",1)
+FileInstall(".\query_off.ico",$appdata & "\query_off.ico",1)
 FileInstall(".\menu_profile.ico",$appdata & "\menu_profile.ico",1)
 FileInstall(".\menu_start.ico",$appdata & "\menu_start.ico",1)
 FileInstall(".\menu_stop.ico",$appdata & "\menu_stop.ico",1)
@@ -50,6 +52,7 @@ FileInstall(".\menu_profile_del.ico",$appdata & "\menu_profile_del.ico",1)
 FileInstall(".\LICENSE.txt",$appdata & "\LICENSE.txt",1)
 
 $config = $appdata & "\config.ini"
+$online = $appdata & "\online.ini"
 $lng = $appdata & "\app.lng"
 
 If $CmdLine[0] > 0 Then
@@ -76,8 +79,21 @@ DirCreate($dir_steamcmd)
 $config_game = @ScriptDir & "\enshrouded_server.json"
 $profile = IniRead($config,"config","profile","default")
 
+$online_reset = IniReadSectionNames($online)
+If Not @error Then
+	For $i_reset = 1 To $online_reset[0]
+		IniWrite($online,$online_reset[$i_reset],"online","0")
+		IniWrite($online,$online_reset[$i_reset],"session","0")
+	Next
+EndIf
+
 $pid = 0
 $tray_state = 0
+$online_tab = 0
+$online_path = ""
+$online_line = 0
+$url_github = "https://github.com/SYSOFTEK/SMM-Enshrouded"
+$url_version = $url_github & "/releases/latest/download/version.txt"
 
 $monitor = 0
 $monitor_timer = 0
@@ -108,6 +124,11 @@ GUICtrlCreateLabel(_LNG_("label_ban"),440,60,310,20,BitOR(0x01,0x0200))
 	GUICtrlSetColor(-1,0xffffff)
 	GUICtrlSetBkColor(-1,-2)
 
+$button_query = GUICtrlCreateButton("",2,2,22,22,0x0040)
+	_GUICtrlButton_SetImage(-1,$appdata & "\query_off.ico")
+	GUICtrlSetOnEvent(-1,"_Refresh_Query_")
+	GUICtrlSetTip(-1,_LNG_("tip_query"))
+
 $label_profile = GUICtrlCreateLabel(_LNG_("label_profile") & " : ---",5,55,150,25)
 	GUICtrlSetFont(-1,10,700)
 	GUICtrlSetColor(-1,0xffffff)
@@ -122,22 +143,25 @@ $button_lng = GUICtrlCreateButton(IniRead($config,"config","lng","EN"),718,2,30,
 				GUICtrlSetOnEvent(-1,"_Lng_Select_")
 		Next
 
+$button_online = GUICtrlCreateButton(_LNG_("button_online") & " >",650,22,98,20)
+	GUICtrlSetOnEvent(-1,"_Online_Tab_")
+
 $button_profile = GUICtrlCreateButton("",0,80,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_profile.ico")
-		GUICtrlSetOnEvent(-1,"_Profile_")
+	GUICtrlSetOnEvent(-1,"_Profile_")
 	GUICtrlSetTip(-1,_LNG_("tip_profile"))
 
 $button_start = GUICtrlCreateButton("",0,160,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_start.ico")
-		GUICtrlSetOnEvent(-1,"_Start_")
+	GUICtrlSetOnEvent(-1,"_Start_")
 	GUICtrlSetTip(-1,_LNG_("tip_start"))
 $button_stop = GUICtrlCreateButton("",0,200,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_stop.ico")
-		GUICtrlSetOnEvent(-1,"_Stop_")
+	GUICtrlSetOnEvent(-1,"_Stop_")
 	GUICtrlSetTip(-1,_LNG_("tip_stop"))
 $button_restart = GUICtrlCreateButton("",0,240,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_restart.ico")
-		GUICtrlSetOnEvent(-1,"_Restart_")
+	GUICtrlSetOnEvent(-1,"_Restart_")
 	GUICtrlSetTip(-1,_LNG_("tip_restart"))
 
 $button_steamcmd = GUICtrlCreateButton("",0,320,40,40,0x0040)
@@ -146,16 +170,21 @@ $button_steamcmd = GUICtrlCreateButton("",0,320,40,40,0x0040)
 	GUICtrlSetTip(-1,_LNG_("tip_steamcmd"))
 $button_backup = GUICtrlCreateButton("",0,360,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_backup.ico")
-		GUICtrlSetOnEvent(-1,"_Backup_")
+	GUICtrlSetOnEvent(-1,"_Backup_")
 	GUICtrlSetTip(-1,_LNG_("tip_backup"))
 $button_config = GUICtrlCreateButton("",0,400,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_config.ico")
-		GUICtrlSetOnEvent(-1,"_Config_")
+	GUICtrlSetOnEvent(-1,"_Config_Menu_")
 	GUICtrlSetTip(-1,_LNG_("tip_config"))
+	$mn_config = GUICtrlCreateContextMenu($button_config)
+		GUICtrlCreateMenuItem(_LNG_("tip_config_server"),$mn_config)
+			GUICtrlSetOnEvent(-1,"_Config_JSON_")
+		GUICtrlCreateMenuItem(_LNG_("tip_config_notif"),$mn_config)
+			GUICtrlSetOnEvent(-1,"_Config_Notif_")
 
 $button_about = GUICtrlCreateButton("",0,480,40,40,0x0040)
 	_GUICtrlButton_SetImage(-1,$appdata & "\menu_about.ico")
-		GUICtrlSetOnEvent(-1,"_About_")
+	GUICtrlSetOnEvent(-1,"_About_")
 	GUICtrlSetTip(-1,_LNG_("tip_about"))
 
 GUICtrlCreateGroup(_LNG_("gp_perf"),45,85,230,100)
@@ -199,6 +228,15 @@ $button_download = GUICtrlCreateButton(_LNG_("button_download"),295,380,200,40)
 	GUICtrlSetFont(-1,18)
 	GUICtrlSetOnEvent(-1,"_SteamCMD_")
 
+GUICtrlCreateGraphic(750,0,1,520)
+	GUICtrlSetColor(-1,0x000000)
+
+$list_online = GUICtrlCreateListView(_LNG_("list_players") & "|" & _LNG_("list_session") & "|" & _LNG_("list_total"),755,0,285,515)
+	GUICtrlSendMsg($list_online,0x101E,0,125)
+	GUICtrlSendMsg($list_online,0x101E,1,60)
+	GUICtrlSendMsg($list_online,0x101E,2,60)
+	ControlDisable($guiname,"",HWnd(_GUICtrlListView_GetHeader($list_online)))
+
 TraySetToolTip($guiname)
 	TraySetClick(8)
 	TraySetOnEvent(-13,"_Tray_State_")
@@ -211,6 +249,7 @@ TraySetToolTip($guiname)
 ControlDisable($guiname,"",$button_stop)
 ControlDisable($guiname,"",$button_restart)
 
+AdlibRegister("_Check_Version_",5000)
 _Refresh_()
 AdlibRegister("_Refresh_",10000)
 
@@ -256,6 +295,10 @@ Func _Lng_Menu_()
 	ControlClick($guiname,"",$button_lng,"right")
 EndFunc
 
+Func _Config_Menu_()
+	ControlClick($guiname,"",$button_config,"right")
+EndFunc
+
 Func _Lng_Select_()
 	$lng_select = StringSplit(StringReplace(GUICtrlRead(@GUI_CtrlId,1)," ",""),":")
 	If $lng_select[1] <> GUICtrlRead($button_lng) Then
@@ -271,6 +314,16 @@ Func _LNG_($_lng_)
 	$_lng_ = IniRead($lng,IniRead($config,"config","lng","EN"),$_lng_,"<STRING_NOT_TRANSLATED>")
 	$_lng_ = StringReplace($_lng_,"[br]",@CRLF)
 	Return $_lng_
+EndFunc
+
+Func _Check_Version_()
+	AdlibUnRegister("_Check_Version_")
+	If IniRead($config,"config","update","") == 1 And FileGetVersion(@ScriptFullPath) <> BinaryToString(InetRead($url_version,1)) Then
+		$msgbox = MsgBox(68,"-" & _LNG_("msg_update") & "-",_LNG_("msg_update_desc"),0,$gui)
+		If $msgbox == 6 Then
+			ShellExecute($url_github)
+		EndIf
+	EndIf
 EndFunc
 
 Func _Refresh_()
@@ -302,12 +355,23 @@ Func _Refresh_()
 	Else
 		ControlEnable($guiname,"",$button_backup)
 	EndIf
-	If Not FileExists($config_game) Then
-		ControlDisable($guiname,"",$button_profile)
-		ControlDisable($guiname,"",$button_config)
-	ElseIf $pid == 0 Then
-		ControlEnable($guiname,"",$button_profile)
-		ControlEnable($guiname,"",$button_config)
+EndFunc
+
+Func _Refresh_Query_()
+	If $monitor == 1 Then
+		$getip = _StringBetween(BinaryToString(InetRead("http://checkip.dyndns.org",1)),": ","<")
+		If Not @error Then
+			$myip = $getip[0]
+		Else
+			$myip = "error"
+		EndIf
+		$query = BinaryToString(InetRead("https://steamquerytool.com/?ip=" & $myip & "&port=" & _Path_Port_(),1))
+		If StringInStr($query,"not found") Then
+			_GUICtrlButton_SetImage($button_query,$appdata & "\query_off.ico")
+		Else
+			_GUICtrlButton_SetImage($button_query,$appdata & "\query_on.ico")
+		EndIf
+		AdlibRegister("_Refresh_Query_",600000)
 	EndIf
 EndFunc
 
@@ -321,6 +385,70 @@ Func _Path_Log_()
 	$read_usage = FileRead($config_game)
 	$log_usage = _StringBetween($read_usage,'"logDirectory": "','",')
 	If Not @error Then Return $log_usage[0]
+EndFunc
+
+Func _Path_Port_()
+	$read_usage = FileRead($config_game)
+	$log_usage = _StringBetween($read_usage,'"queryPort": ',',')
+	If Not @error Then Return $log_usage[0]
+EndFunc
+
+Func _Online_Tab_()
+	$pos = WinGetPos($guiname)
+	If $online_tab == 0 Then
+		ControlMove($guiname,"",$gui,$pos[0],$pos[1],1050)
+		GUICtrlSetData($button_online,_LNG_("button_online") & " <")
+		$online_tab = 1
+	Else
+		ControlMove($guiname,"",$gui,$pos[0],$pos[1],756)
+		GUICtrlSetData($button_online,_LNG_("button_online") & " >")
+		$online_tab = 0
+	EndIf
+EndFunc
+
+Func _Online_Player_()
+	$online_nbr = _FileCountLines($online_path)
+	$online_last = FileReadLine($online_path,$online_nbr)
+	If $online_nbr <> $online_line Then
+		For $i_online = $online_line To $online_nbr
+			If $online_last <> FileReadLine($online_path,$i_online) Or $online_last <> "" Then
+				$online_read = FileReadLine($online_path,$i_online + 1)
+				If StringInStr($online_read,"Send Character Savegame") Then
+					$player = _StringBetween($online_read,"'","'")
+					If Not @error Then
+						If IniRead($config,"config","discord_enable","") == 1 And IniRead($config,"config","discord_player_on","") == 1 Then
+							If IniRead($online,$player[0],"online","") <> 1 Then _Send_Discord_(IniRead($config,"config","discord_hook",""),"** " & _LNG_("discord_notif") & $guiname & "**" & @CRLF & _LNG_("discord_player_on") & " : " & $player[0])
+						EndIf
+						IniWrite($online,$player[0],"online","1")
+					EndIf
+				ElseIf StringInStr($online_read,"Remove Entity for Player") Then
+					$player = _StringBetween($online_read,"'","'")
+					If Not @error Then
+						If IniRead($config,"config","discord_enable","") == 1 And IniRead($config,"config","discord_player_off","") == 1 Then
+							If IniRead($online,$player[0],"online","") <> 0 Then _Send_Discord_(IniRead($config,"config","discord_hook",""),"** " & _LNG_("discord_notif") & $guiname & "**" & @CRLF & _LNG_("discord_player_off") & " : " & $player[0])
+						EndIf
+						IniWrite($online,$player[0],"online","0")
+					EndIf
+				EndIf
+			EndIf
+			Sleep(100)
+		Next
+		$online_line = $online_nbr
+	EndIf
+	_GUICtrlListView_DeleteAllItems($list_online)
+	$online_section = IniReadSectionNames($online)
+	If Not @error Then
+		For $i_section = 1 To $online_section[0]
+			If IniRead($online,$online_section[$i_section],"online","") == "1" Then
+				$online_player = $online_section[$i_section]
+				IniWrite($online,$online_player,"session",Ceiling(IniRead($online,$online_player,"session","0")) + 10)
+				IniWrite($online,$online_player,"total",Ceiling(IniRead($online,$online_player,"total","0")) + 10)
+				$online_session = _SecToTime_(IniRead($online,$online_section[$i_section],"session","0"))
+				$online_total = _SecToTime_(IniRead($online,$online_section[$i_section],"total","0"))
+				GUICtrlCreateListViewItem($online_player & "|" & $online_session & "|" & $online_total,$list_online)
+			EndIf
+		Next
+	EndIf
 EndFunc
 
 Func _Start_()
@@ -337,30 +465,42 @@ Func _Start_()
 			ControlEnable($guiname,"",$button_restart)
 			ControlDisable($guiname,"",$button_steamcmd)
 			ControlDisable($guiname,"",$button_backup)
-			ControlDisable($guiname,"",$button_config)
 			ControlHide($guiname,"",$pic_console)
 			ControlHide($guiname,"",$label_console)
 			$monitor = 1
 			AdlibRegister("_Monitor_",1000)
+			$online_path = _Path_Log_() & "\enshrouded_server.log"
+			$online_line = 0
+			AdlibRegister("_Online_Player_",10000)
+			AdlibRegister("_Refresh_Query_",10000)
+			If IniRead($config,"config","discord_enable","") == 1 And  IniRead($config,"config","discord_enable","discord_server_on") == 1 Then
+				_Send_Discord_(IniRead($config,"config","discord_hook",""),"** " & _LNG_("discord_notif") & $guiname & "**" & @CRLF & _LNG_("discord_server_on"))
+			EndIf
 		EndIf
 	EndIf
 EndFunc
 
-
 Func _Stop_()
 	$monitor = 0
 	AdlibUnRegister("_Monitor_")
+	AdlibUnRegister("_Online_Player_")
+	AdlibUnRegister("_Refresh_Query_")
 	WinActivate($guiname)
 	MouseClick("left",55,200,1,0)
 	Send("!{F4}")
 	_Stop_Monitor_()
+	If IniRead($config,"config","discord_enable","") == 1 And  IniRead($config,"config","discord_enable","discord_server_off") == 1 Then
+		_Send_Discord_(IniRead($config,"config","discord_hook",""),"** " & _LNG_("discord_notif") & $guiname & "**" & @CRLF & _LNG_("discord_server_off"))
+	EndIf
 EndFunc
-
-
 
 Func _Stop_Monitor_()
 	$monitor = 0
 	AdlibUnRegister("_Monitor_")
+	AdlibUnRegister("_Online_Player_")
+	AdlibUnRegister("_Refresh_Query_")
+	_GUICtrlButton_SetImage($button_query,$appdata & "\query_off.ico")
+	_GUICtrlListView_DeleteAllItems($list_online)
 	ControlEnable($guiname,"",$button_lng)
 	ControlEnable($guiname,"",$button_profile)
 	ControlEnable($guiname,"",$button_start)
@@ -368,7 +508,6 @@ Func _Stop_Monitor_()
 	ControlDisable($guiname,"",$button_restart)
 	ControlEnable($guiname,"",$button_steamcmd)
 	ControlEnable($guiname,"",$button_backup)
-	ControlEnable($guiname,"",$button_config)
 	ControlShow($guiname,"",$pic_console)
 	ControlShow($guiname,"",$label_console)
 	GUICtrlSetData($monitor_cpuv,"0%")
@@ -415,6 +554,7 @@ Func _SteamCMD_()
 	ControlShow($guiname,"",$label_console)
 	ControlEnable($guiname,"",$button_lng)
 	ControlEnable($guiname,"",$button_steamcmd)
+	ControlEnable($guiname,"",$button_config)
 	ControlEnable($guiname,"",$button_about)
 	_Refresh_()
 	AdlibRegister("_Refresh_",10000)
@@ -428,16 +568,16 @@ Func _Profile_()
 	Global $list_profile = GUICtrlCreateListView(_LNG_("label_profile"),-2,0,203,228)
 	GUICtrlCreateButton("",0,228,22,22,0x0040)
 		_GUICtrlButton_SetImage(-1,$appdata & "\menu_profile_load.ico")
-			GUICtrlSetOnEvent(-1,"_Profile_Load_")
-			GUICtrlSetTip(-1,_LNG_("tip_profile_load"))
+		GUICtrlSetOnEvent(-1,"_Profile_Load_")
+		GUICtrlSetTip(-1,_LNG_("tip_profile_load"))
 	GUICtrlCreateButton("",156,228,22,22,0x0040)
 		_GUICtrlButton_SetImage(-1,$appdata & "\menu_profile_add.ico")
-			GUICtrlSetOnEvent(-1,"_Profile_Add_")
-			GUICtrlSetTip(-1,_LNG_("tip_profile_add"))
+		GUICtrlSetOnEvent(-1,"_Profile_Add_")
+		GUICtrlSetTip(-1,_LNG_("tip_profile_add"))
 	GUICtrlCreateButton("",178,228,22,22,0x0040)
 		_GUICtrlButton_SetImage(-1,$appdata & "\menu_profile_del.ico")
-			GUICtrlSetOnEvent(-1,"_Profile_Del_")
-			GUICtrlSetTip(-1,_LNG_("tip_profile_del"))
+		GUICtrlSetOnEvent(-1,"_Profile_Del_")
+		GUICtrlSetTip(-1,_LNG_("tip_profile_del"))
 	_Profile_Refresh_()
 	GUISetState()
 EndFunc
@@ -468,6 +608,8 @@ Func _Profile_Load_()
 		$msgbox = MsgBox(52,"- " & _LNG_("msg_profil_load") & " -",_LNG_("msg_profil_load_desc") & " :" & @CRLF & StringUpper($profile) & " >> " & StringUpper($select_0),0,$gui_profile)
 		If $msgbox == 6 Then
 			FileMove(_Path_Save_() & "\*",$dir_profile & "\" & $profile & "\*",1)
+			FileMove($config_game,$dir_profile & "\" & $profile & "\*",1)
+			FileMove($dir_profile & "\" & $select_0 & "\enshrouded_server.json",$config_game,1)
 			FileMove($dir_profile & "\" & $select_0 & "\*",_Path_Save_() & "\*",1)
 			$profile = $select_0
 			IniWrite($config,"config","profile",$profile)
@@ -515,12 +657,16 @@ Func _Backup_()
 	EndIf
 EndFunc
 
-Func _Config_()
+Func _Config_JSON_()
+	If Not FileExists($config_game) Then
+		MsgBox(48,"-" & _LNG_("msg_noconfig") & " -",_LNG_("msg_noconfig_desc"),0,$gui)
+		Return
+	EndIf
 	ControlDisable($guiname,"",$gui)
-	Global $guiname_config = _LNG_("gui_config")
-	Global $gui_config = GUICreate($guiname_config,400,500,-1,-1,BitXOR(BitOR(0x00020000,0x00C00000,0x80000000,0x00080000),0x00020000),-1,$gui)
-		GUISetOnEvent(-3,"_Config_Close_")
-	Global $list_config = _GUICtrlListView_Create($gui_config,_LNG_("list_opt") & "|" & _LNG_("list_val"),-2,0,403,501,BitOR(0x0001,0x00200000,0x0004),0x00000200)
+	Global $guiname_config_json = _LNG_("gui_config")
+	Global $gui_config_json = GUICreate($guiname_config_json,400,500,-1,-1,BitXOR(BitOR(0x00020000,0x00C00000,0x80000000,0x00080000),0x00020000),-1,$gui)
+		GUISetOnEvent(-3,"_Config_JSON_Close_")
+	Global $list_config = _GUICtrlListView_Create($gui_config_json,_LNG_("list_opt") & "|" & _LNG_("list_val"),-2,0,403,501,BitOR(0x0001,0x00200000,0x0004),0x00000200)
 		_GUICtrlListView_SetExtendedListViewStyle($list_config,BitOR(0x00000001,0x00000020))
 		_GUICtrlListView_SetColumnWidth($list_config,0,200)
 		_GUICtrlListView_SetColumnWidth($list_config,1,140)
@@ -544,13 +690,97 @@ Func _Config_()
 	GUISetState()
 EndFunc
 
-Func _Config_Close_()
+Func _Config_JSON_Close_()
 	If $lock == 0 Then
-		GUIDelete($gui_config)
+		GUIDelete($gui_config_json)
 		ControlEnable($guiname,"",$gui)
 		WinActivate($guiname)
 		_Refresh_()
 	EndIf
+EndFunc
+
+Func _Config_Notif_()
+	ControlDisable($guiname,"",$gui)
+	Global $guiname_config_notif = _LNG_("gui_notif")
+	Global $gui_config_notif = GUICreate($guiname_config_notif,400,195,-1,-1,BitXOR(BitOR(0x00020000,0x00C00000,0x80000000,0x00080000),0x00020000),-1,$gui)
+		GUISetBkColor(0xffffff,$gui_config_notif)
+		GUISetOnEvent(-3,"_Config_Notif_Close_")
+	Global $config_check_update = GUICtrlCreateCheckbox(_LNG_("notif_update"),5,5,250,25)
+		GUICtrlSetFont(-1,12)
+	GUICtrlCreateGroup(_LNG_("notif_discord_gp"),5,35,390,125)
+		Global $config_check_discord_enable = GUICtrlCreateCheckbox(_LNG_("notif_discord"),10,50,150,25)
+			GUICtrlSetFont(-1,12)
+			GUICtrlSetOnEvent(-1,"_Config_Notif_Discord_")
+		Global $config_check_discord_server_on = GUICtrlCreateCheckbox(_LNG_("notif_discord_server_on"),10,80,150,25)
+			GUICtrlSetFont(-1,12)
+		Global $config_check_discord_server_off = GUICtrlCreateCheckbox(_LNG_("notif_discord_server_off"),200,80,150,25)
+			GUICtrlSetFont(-1,12)
+		Global $config_check_discord_player_on = GUICtrlCreateCheckbox(_LNG_("notif_discord_player_on"),10,105,150,25)
+			GUICtrlSetFont(-1,12)
+		Global $config_check_discord_player_off = GUICtrlCreateCheckbox(_LNG_("notif_discord_player_off"),200,105,150,25)
+			GUICtrlSetFont(-1,12)
+		GUICtrlCreateLabel("URL hook :",10,130,80,20,BitOR(0x01,0x0200))
+			GUICtrlSetFont(-1,12)
+		Global $config_input_discord_hook = GUICtrlCreateInput(IniRead($config,"config","discord_hook",""),90,130,250,20)
+		Global $config_button_discord_test = GUICtrlCreateButton("test",340,130,50,20)
+			GUICtrlSetOnEvent(-1,"_Config_Notif_Discord_Test_")
+		GUICtrlCreateButton(_LNG_("notif_save"),245,165,150,25)
+			GUICtrlSetOnEvent(-1,"_Config_Notif_Save_")
+		If IniRead($config,"config","update","") == 1 Then GUICtrlSetState($config_check_update,1)
+		If IniRead($config,"config","discord_enable","") == 1 Then
+			GUICtrlSetState($config_check_discord_enable,1)
+		Else
+			ControlDisable($guiname_config_notif,"",$config_check_discord_server_on)
+			ControlDisable($guiname_config_notif,"",$config_check_discord_server_off)
+			ControlDisable($guiname_config_notif,"",$config_check_discord_player_on)
+			ControlDisable($guiname_config_notif,"",$config_check_discord_player_off)
+			ControlDisable($guiname_config_notif,"",$config_input_discord_hook)
+			ControlDisable($guiname_config_notif,"",$config_button_discord_test)
+		EndIf
+		If IniRead($config,"config","discord_server_on","") == 1 Then GUICtrlSetState($config_check_discord_server_on,1)
+		If IniRead($config,"config","discord_server_off","") == 1 Then GUICtrlSetState($config_check_discord_server_off,1)
+		If IniRead($config,"config","discord_player_on","") == 1 Then GUICtrlSetState($config_check_discord_player_on,1)
+		If IniRead($config,"config","discord_player_off","") == 1 Then GUICtrlSetState($config_check_discord_player_off,1)
+	GUISetState()
+EndFunc
+
+Func _Config_Notif_Close_()
+	GUIDelete($gui_config_notif)
+	ControlEnable($guiname,"",$gui)
+	WinActivate($guiname)
+EndFunc
+
+Func _Config_Notif_Discord_()
+	If GUICtrlRead($config_check_discord_enable) == 1 Then
+		ControlEnable($guiname_config_notif,"",$config_check_discord_server_on)
+		ControlEnable($guiname_config_notif,"",$config_check_discord_server_off)
+		ControlEnable($guiname_config_notif,"",$config_check_discord_player_on)
+		ControlEnable($guiname_config_notif,"",$config_check_discord_player_off)
+		ControlEnable($guiname_config_notif,"",$config_input_discord_hook)
+		ControlEnable($guiname_config_notif,"",$config_button_discord_test)
+	Else
+		ControlDisable($guiname_config_notif,"",$config_check_discord_server_on)
+		ControlDisable($guiname_config_notif,"",$config_check_discord_server_off)
+		ControlDisable($guiname_config_notif,"",$config_check_discord_player_on)
+		ControlDisable($guiname_config_notif,"",$config_check_discord_player_off)
+		ControlDisable($guiname_config_notif,"",$config_input_discord_hook)
+		ControlDisable($guiname_config_notif,"",$config_button_discord_test)
+	EndIf
+EndFunc
+
+Func _Config_Notif_Discord_Test_()
+	_Send_Discord_(GuiCtrlRead($config_input_discord_hook),"**TEST " & $guiname & "**" & @CRLF & "test OK")
+EndFunc
+
+Func _Config_Notif_Save_()
+	IniWrite($config,"config","update",GuiCtrlRead($config_check_update))
+	IniWrite($config,"config","discord_enable",GuiCtrlRead($config_check_discord_enable))
+	IniWrite($config,"config","discord_server_on",GuiCtrlRead($config_check_discord_server_on))
+	IniWrite($config,"config","discord_server_off",GuiCtrlRead($config_check_discord_server_off))
+	IniWrite($config,"config","discord_player_on",GuiCtrlRead($config_check_discord_player_on))
+	IniWrite($config,"config","discord_player_off",GuiCtrlRead($config_check_discord_player_off))
+	IniWrite($config,"config","discord_hook",GuiCtrlRead($config_input_discord_hook))
+	_Config_Notif_Close_()
 EndFunc
 
 Func _About_()
@@ -604,7 +834,7 @@ Func _About_Close_()
 EndFunc
 
 Func _About_Web_()
-	ShellExecute("https://github.com/SYSOFTEK/SMM-Enshrouded")
+	ShellExecute($url_github)
 EndFunc
 
 Func _Monitor_()
@@ -730,8 +960,8 @@ Func WM_NOTIFY($hWnd,$iMsg,$iwParam,$ilParam)
 							Local $iSubItemText = _GUICtrlListView_GetItemText($list_config,$Item,$SubItem)
 							Local $aRect = _GUICtrlListView_GetSubItemRect($list_config,$Item,$SubItem)
 							If $iItemText <> "" Then
-								$WinGetPos = WinGetPos($guiname_config)
-								$gui_cell = GUICreate("cell",$aRect[2] - $aRect[0] - 3,20,$WinGetPos[0] + $aRect[0] + 3,$WinGetPos[1] + $aRect[1] + 27,0x80000000,0x00000200,$gui_config)
+								$WinGetPos = WinGetPos($guiname_config_json)
+								$gui_cell = GUICreate("cell",$aRect[2] - $aRect[0] - 3,20,$WinGetPos[0] + $aRect[0] + 3,$WinGetPos[1] + $aRect[1] + 27,0x80000000,0x00000200,$gui_config_json)
 								If $aHit[1] == 1 Then
 									_Cell_Type_($iItemText,$iSubItemText,$aRect[2] - $aRect[0])
 								EndIf
@@ -829,4 +1059,22 @@ Func _SteamCMD_Win_Close_()
 		Sleep(100)
 	WEnd
 	Exit
+EndFunc
+
+Func _SecToTime_($iSecondes)
+    $iHeures = Int($iSecondes / 3600)
+    $iSecondesRestantes = $iSecondes - ($iHeures * 3600)
+    $iMinutes = Int($iSecondesRestantes / 60)
+    $sHeures = StringFormat("%02d", $iHeures)
+    $sMinutes = StringFormat("%02d", $iMinutes)
+    Return $sHeures & ":" & $sMinutes
+EndFunc
+
+Func _Send_Discord_($msg_url,$msg_txt)
+	$msg_txt = StringReplace($msg_txt,@CRLF,"\n")
+	Local $oHTTP = ObjCreate("winhttp.winhttprequest.5.1")
+	Local $Packet = '{"content": "' & $msg_txt & '"}'
+	$oHTTP.open('POST',$msg_url)
+	$oHTTP.setRequestHeader("Content-Type","application/json")
+	$oHTTP.send($Packet)
 EndFunc
