@@ -81,7 +81,7 @@ Pour utiliser SMM-Enshrouded, suivez ces instructions :
 ## Langues Disponibles
 - Français
 - Anglais
-
+- German (thanks to [@teris](https://github.com/teris))
 ## Licence
 Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus d'informations.
 
